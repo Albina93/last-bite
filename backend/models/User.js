@@ -27,7 +27,7 @@ const userSchema = new Schema(
       required: true,
     },
   },
-  { timestamps: true },
+  { timestamps: true }, // adds automatically createdAt & updatedAt
 );
 
 // hash user password
