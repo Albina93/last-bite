@@ -1,7 +1,11 @@
 import useListings from "../hooks/useListings";
+import ListingCard from "../components/ListingCard";
 
 const Home = () => {
   const { loading, listings, error } = useListings();
+  console.log("listings:", listings);
+  console.log("loading:", loading);
+  console.log("error:", error);
 
   if (loading) {
     return <p>Loading...</p>;
@@ -10,18 +14,17 @@ const Home = () => {
     return <p>Error: {error}</p>;
   }
   if (listings.length === 0) {
-    return <p>No listings found</p>;
+    return <p>No listings available</p>;
   }
   return (
-    <ul>
-      {listings.map((listing) => (
-        <li key={listing._id}>
-          <h3>{listing.title}</h3>
-          <p>Location: {listing.location}</p>
-          <p>{listing.description}</p>
-        </li>
-      ))}
-    </ul>
+    <div>
+      <h3>Available food near you</h3>
+      <div>
+        {listings.map((listing) => (
+          <ListingCard key={listing._id} listing={listing} />
+        ))}
+      </div>
+    </div>
   );
 };
 export default Home;
