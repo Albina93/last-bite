@@ -26,6 +26,17 @@ const createClaim = async (req, res) => {
       claimer_id: req.user._id,
       donation_note: req.body.donation_note,
     });
+
+    // update quantity
+    listing.quantity = listing.quantity - 1;
+
+    // if quantity reaches 0 — close the listing
+    if (listing.quantity === 0) {
+      listing.status = "closed";
+    }
+
+    // save the updated listing
+    await listing.save();
     res.status(201).json(claim);
   } catch (err) {
     res.status(500).json({ message: err.message });

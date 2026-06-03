@@ -3,9 +3,9 @@ import ListingCard from "../components/ListingCard";
 
 const Home = () => {
   const { loading, listings, error } = useListings();
-  console.log("listings:", listings);
-  console.log("loading:", loading);
-  console.log("error:", error);
+  // console.log("listings:", listings);
+  // console.log("loading:", loading);
+  // console.log("error:", error);
 
   if (loading) {
     return <p>Loading...</p>;

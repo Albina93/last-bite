@@ -12,7 +12,7 @@ function useListings() {
         setLoading(true);
         setError(null);
         const response = await api.get("/api/listings");
-        console.log("listings:", response.data);
+        // console.log("listings:", response.data);
         setListings(response.data);
       } catch (err) {
         setError(err.response?.data?.message || "Failed to fetch listings");
