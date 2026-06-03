@@ -7,6 +7,7 @@ import Dashboard from "./pages/Dashboard";
 import CreateListing from "./pages/CreateListing";
 import EditListing from "./pages/EditListing";
 import ListingDetail from "./pages/ListingDetail";
+import Navbar from "./components/Navbar";
 
 const ProtectedRoute = ({ children }) => {
   const { user, loading } = useAuth();
@@ -26,6 +27,7 @@ const DonorRoute = ({ children }) => {
 function App() {
   return (
     <BrowserRouter>
+      <Navbar />
       <Routes>
         {/* Public Routes */}
         <Route path="/" element={<Home />} />
