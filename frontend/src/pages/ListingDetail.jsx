@@ -25,6 +25,7 @@ const ListingDetail = () => {
       });
       //  set claimSuccess to true
       setClaimSuccess(true);
+      window.location.reload();
     } catch (err) {
       //  catch — set claim error
       if (err.response) {
@@ -77,7 +78,10 @@ const ListingDetail = () => {
           {/* Claim section — claimers only */}
           {user && user.role === "claimer" && (
             <div>
-              {claimSuccess ? (
+              {listing.status === "closed" ? (
+                // listing is closed — no more claims
+                <p>This listing is no longer available</p>
+              ) : claimSuccess ? (
                 //success message
                 <p>You have successfully claimed this listing!</p>
               ) : (

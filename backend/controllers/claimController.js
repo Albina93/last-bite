@@ -36,7 +36,7 @@ const createClaim = async (req, res) => {
     }
 
     // save the updated listing
-    await listing.save();
+    await listing.save({ validateBeforeSave: false });
     res.status(201).json(claim);
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -61,7 +61,10 @@ const getClaimsForListing = async (req, res) => {
 
 const getMyClaims = async (req, res) => {
   try {
-    const claims = await Claim.find({ claimer_id: req.user._id });
+    const claims = await Claim.find({ claimer_id: req.user._id }).populate(
+      "listing_id",
+      "title location pickup_time photo_url status",
+    ); // it returns full listing data
     res.status(200).json(claims);
   } catch (err) {
     res.status(500).json({ message: err.message });
