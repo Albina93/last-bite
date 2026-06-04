@@ -12,10 +12,9 @@ function useClaims() {
         setLoading(true);
         setError(null);
         const response = await api.get("/api/claims/my-claims");
-        // console.log("listings:", response.data);
         setClaims(response.data);
       } catch (err) {
-        setError(err.response?.data?.message || "Failed to fetch listings");
+        setError(err.response?.data?.message || "Failed to fetch claims");
       } finally {
         setLoading(false);
       }
