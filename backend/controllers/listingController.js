@@ -1,4 +1,5 @@
 const Listing = require("../models/Listing");
+const Claim = require("../models/Claim");
 
 const getAllListings = async (req, res) => {
   try {
@@ -14,7 +15,30 @@ const getMyListings = async (req, res) => {
   try {
     // find only donor's listings
     const listings = await Listing.find({ owner_id: req.user._id });
-    res.status(200).json(listings);
+
+    // for each listing get claim counts
+    const listingsWithCounts = await Promise.all(
+      listings.map(async (listing) => {
+        const totalClaims = await Claim.countDocuments({
+          listing_id: listing._id,
+        });
+        const pendingClaims = await Claim.countDocuments({
+          listing_id: listing._id,
+          status: "pending",
+        });
+        const pickedUpClaims = await Claim.countDocuments({
+          listing_id: listing._id,
+          status: "picked_up",
+        });
+        return {
+          ...listing.toObject(),
+          totalClaims,
+          pendingClaims,
+          pickedUpClaims,
+        };
+      }),
+    );
+    res.status(200).json(listingsWithCounts);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }

@@ -17,6 +17,15 @@ const ClaimerDashboard = () => {
     }
   };
 
+  const handlePickedUp = async (id) => {
+    try {
+      await api.put(`/api/claims/${id}`, { status: "picked_up" });
+      window.location.reload();
+    } catch (err) {
+      setCancelError(err.response?.data?.message || "Failed to update claim");
+    }
+  };
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
 
@@ -39,11 +48,18 @@ const ClaimerDashboard = () => {
               <p>
                 Claimed at: {new Date(claim.createdAt).toLocaleDateString()}
               </p>
-              {claim.status !== "picked_up" && (
-                <button onClick={() => handleCancel(claim._id)}>
-                  Cancel claim
-                </button>
+              {claim.status === "pending" && (
+                <div>
+                  <button onClick={() => handlePickedUp(claim._id)}>
+                    Mark as picked up
+                  </button>
+                  <button onClick={() => handleCancel(claim._id)}>
+                    Cancel claim
+                  </button>
+                </div>
               )}
+
+              {claim.status === "picked_up" && <p>✓ Picked up</p>}
             </li>
           ))}
         </ul>

@@ -20,9 +20,32 @@ const DonorDashboard = () => {
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
 
+  // calculate totals from all listings
+  const totalListings = myListings.length;
+  const totalClaims = myListings.reduce(
+    (sum, listing) => sum + listing.totalClaims,
+    0,
+  );
+  const totalPending = myListings.reduce(
+    (sum, listing) => sum + listing.pendingClaims,
+    0,
+  );
+  const totalPickedUp = myListings.reduce(
+    (sum, listing) => sum + listing.pickedUpClaims,
+    0,
+  );
+
   return (
     <div>
       <h2>My listings</h2>
+
+      <div>
+        <p>Total listings: {totalListings}</p>
+        <p>Total claims: {totalClaims}</p>
+        <p>Pending: {totalPending}</p>
+        <p>Picked up: {totalPickedUp}</p>
+      </div>
+
       {deleteError && <p>{deleteError}</p>}
       <Link to="/listings/create">+ Post food</Link>
 
