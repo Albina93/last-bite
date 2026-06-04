@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import useListing from "../hooks/useListing";
 import { useAuth } from "../context/AuthContext";
 import { useState } from "react";
@@ -14,102 +14,176 @@ const ListingDetail = () => {
   const [donationNote, setDonationNote] = useState("");
 
   const handleClaim = async () => {
-    // set claim loading to true
     setClaimLoading(true);
-    // clear claim error
     setClaimError(null);
-    //  try — call POST /api/listings/:id/claims with donationNote
     try {
       await api.post(`/api/listings/${id}/claims`, {
         donation_note: donationNote,
       });
-      //  set claimSuccess to true
       setClaimSuccess(true);
       window.location.reload();
     } catch (err) {
-      //  catch — set claim error
       if (err.response) {
         setClaimError(err.response.data.message);
       } else {
         setClaimError("Something went wrong. Please try again");
       }
     } finally {
-      // set claim loading to false
       setClaimLoading(false);
     }
   };
 
+  if (loading)
+    return (
+      <div className="min-h-screen bg-[#f5f0e8] flex items-center justify-center">
+        <p className="text-[#6b7280]">Loading listing...</p>
+      </div>
+    );
+
+  if (error)
+    return (
+      <div className="min-h-screen bg-[#f5f0e8] flex items-center justify-center">
+        <p className="text-red-500">{error}</p>
+      </div>
+    );
+
   return (
-    <div>
-      {/* loading state  */}
-      {loading && <p>Loading...</p>}
+    <div className="min-h-screen bg-[#f5f0e8]">
+      <div className="max-w-3xl mx-auto px-6 py-10">
+        {/* Back button */}
+        <Link
+          to="/"
+          className="text-[#4a7c59] text-sm font-medium hover:underline flex items-center gap-1 mb-6"
+        >
+          ← Back to listings
+        </Link>
 
-      {/* Error state  */}
-      {error && <p>{error}</p>}
+        {listing && (
+          <div className="bg-white border border-[#d4cfc6] rounded-2xl overflow-hidden shadow-sm">
+            {/* Photo */}
+            {listing.photo_url ? (
+              <img
+                src={listing.photo_url}
+                alt={listing.title}
+                className="w-full h-64 object-cover"
+              />
+            ) : (
+              <div className="w-full h-64 bg-[#e8f0e9] flex items-center justify-center">
+                <span className="text-[#6b7280]">No photo available</span>
+              </div>
+            )}
 
-      {/* Listing details  */}
-      {listing && (
-        <div>
-          {/* Photo  */}
-          {listing.photo_url ? (
-            <img src={listing.photo_url} alt={listing.title} />
-          ) : (
-            <div>No image available</div>
-          )}
+            <div className="p-6">
+              {/* Title and badge */}
+              <div className="flex items-start justify-between mb-4">
+                <h1 className="text-2xl font-bold text-[#2d2d2d]">
+                  {listing.title}
+                </h1>
+                {listing.accept_donations ? (
+                  <span className="bg-[#e8f0e9] text-[#4a7c59] text-xs px-3 py-1 rounded-full font-medium">
+                    Donation welcome
+                  </span>
+                ) : (
+                  <span className="bg-[#f0fdf4] text-[#4a7c59] text-xs px-3 py-1 rounded-full font-medium">
+                    Free
+                  </span>
+                )}
+              </div>
 
-          {/* Title  */}
-          <h1>{listing.title}</h1>
+              {/* Description */}
+              <p className="text-[#6b7280] text-sm mb-6">
+                {listing.description}
+              </p>
 
-          {/* Description  */}
-          <p>{listing.description}</p>
+              {/* Details */}
+              <div className="grid grid-cols-3 gap-4 mb-6">
+                <div className="bg-[#f5f0e8] rounded-xl p-3 text-center">
+                  <p className="text-xs text-[#6b7280] mb-1">Portions</p>
+                  <p className="font-semibold text-[#2d2d2d]">
+                    {listing.quantity}
+                  </p>
+                </div>
+                <div className="bg-[#f5f0e8] rounded-xl p-3 text-center">
+                  <p className="text-xs text-[#6b7280] mb-1">Pickup</p>
+                  <p className="font-semibold text-[#2d2d2d]">
+                    {listing.pickup_time}
+                  </p>
+                </div>
+                <div className="bg-[#f5f0e8] rounded-xl p-3 text-center">
+                  <p className="text-xs text-[#6b7280] mb-1">Location</p>
+                  <p className="font-semibold text-[#2d2d2d] text-xs">
+                    {listing.location}
+                  </p>
+                </div>
+              </div>
 
-          {/* Details */}
-          <p>Quantity: {listing.quantity}</p>
-          <p>Pickup: {listing.pickup_time}</p>
-          <p>Location: {listing.location}</p>
+              {/* Divider */}
+              <div className="border-t border-[#d4cfc6] mb-6"></div>
 
-          {/* Donation part */}
-          {listing.accept_donations ? (
-            <span>Donation welcome</span>
-          ) : (
-            <span>Free</span>
-          )}
-
-          {/* Claim section — claimers only */}
-          {user && user.role === "claimer" && (
-            <div>
-              {listing.status === "closed" ? (
-                // listing is closed — no more claims
-                <p>This listing is no longer available</p>
-              ) : claimSuccess ? (
-                //success message
-                <p>You have successfully claimed this listing!</p>
-              ) : (
-                // claim form
+              {/* Claim section — claimers only */}
+              {user && user.role === "claimer" && (
                 <div>
-                  {claimError && <p>{claimError}</p>}
-                  <textarea
-                    placeholder="Leave a donation note (optional)"
-                    value={donationNote}
-                    onChange={(e) => setDonationNote(e.target.value)}
-                  />
-                  <button onClick={handleClaim} disabled={claimLoading}>
-                    {claimLoading ? "Claiming..." : "Claim this food"}
-                  </button>
+                  {listing.status === "closed" ? (
+                    <div className="bg-[#f5f0e8] rounded-xl p-4 text-center">
+                      <p className="text-[#6b7280] text-sm">
+                        This listing is no longer available
+                      </p>
+                    </div>
+                  ) : claimSuccess ? (
+                    <div className="bg-[#e8f0e9] border border-[#4a7c59] rounded-xl p-4 text-center">
+                      <p className="text-[#4a7c59] font-medium">
+                        🎉 You have successfully claimed this listing!
+                      </p>
+                    </div>
+                  ) : (
+                    <div>
+                      {claimError && (
+                        <div className="bg-red-50 border border-red-200 text-red-600 text-sm px-4 py-3 rounded-lg mb-4">
+                          {claimError}
+                        </div>
+                      )}
+                      <label className="text-[#2d2d2d] text-sm font-medium block mb-2">
+                        Donation note (optional)
+                      </label>
+                      <textarea
+                        placeholder="Leave a note for the donor..."
+                        value={donationNote}
+                        onChange={(e) => setDonationNote(e.target.value)}
+                        className="w-full border border-[#d4cfc6] rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-[#4a7c59] transition-colors mb-4 resize-none h-24"
+                      />
+                      <button
+                        onClick={handleClaim}
+                        disabled={claimLoading}
+                        className="w-full bg-[#4a7c59] text-white py-3 rounded-lg text-sm font-medium hover:bg-[#3d6b4a] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        {claimLoading ? "Claiming..." : "Claim this food"}
+                      </button>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Not logged in */}
+              {!user && (
+                <div className="bg-[#f5f0e8] rounded-xl p-4 text-center">
+                  <p className="text-[#6b7280] text-sm">
+                    Please{" "}
+                    <Link
+                      to="/login"
+                      className="text-[#4a7c59] font-medium hover:underline"
+                    >
+                      log in
+                    </Link>{" "}
+                    to claim this food
+                  </p>
                 </div>
               )}
             </div>
-          )}
-
-          {/* Not logged in  */}
-          {!user && (
-            <p>
-              Please <a href="/login">login</a> to claim this food
-            </p>
-          )}
-        </div>
-      )}
+          </div>
+        )}
+      </div>
     </div>
   );
 };
+
 export default ListingDetail;
