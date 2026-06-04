@@ -100,6 +100,17 @@ const deleteClaim = async (req, res) => {
     if (claim.claimer_id.toString() !== req.user._id.toString()) {
       return res.status(403).json({ message: "Not authorized" });
     }
+
+    // restore listing quantity
+    const listing = await Listing.findById(claim.listing_id);
+    if (listing) {
+      listing.quantity = listing.quantity + 1;
+      if (listing.status === "closed") {
+        listing.status = "active";
+      }
+      await listing.save({ validateBeforeSave: false });
+    }
+
     await Claim.findByIdAndDelete(req.params.id);
     res.status(200).json({ message: "Claim deleted successfully!" });
   } catch (err) {
