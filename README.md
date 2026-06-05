@@ -44,62 +44,64 @@
 
 ![API-endpoint](./frontend/src/assets/API-endpoint.png)
 
-## Folder structure
+## Folder Structure
 
+```
 last-bite/
 ├── backend/
-│ ├── config/
-│ │ └── db.js
-│ ├── controllers/
-│ │ ├── authController.js
-│ │ ├── listingController.js
-│ │ └── claimController.js
-│ ├── models/
-│ │ ├── User.js
-│ │ ├── Listing.js
-│ │ └── Claim.js
-│ ├── routes/
-│ │ ├── authRoutes.js
-│ │ ├── listingRoutes.js
-│ │ └── claimRoutes.js
-│ ├── utils/
-│ │ └── auth.js
-│ ├── .env
-│ ├── .gitignore
-│ ├── package.json
-│ └── server.js
+│   ├── config/
+│   │   └── db.js
+│   ├── controllers/
+│   │   ├── authController.js
+│   │   ├── listingController.js
+│   │   └── claimController.js
+│   ├── models/
+│   │   ├── User.js
+│   │   ├── Listing.js
+│   │   └── Claim.js
+│   ├── routes/
+│   │   ├── authRoutes.js
+│   │   ├── listingRoutes.js
+│   │   └── claimRoutes.js
+│   ├── utils/
+│   │   └── auth.js
+│   ├── .env
+│   ├── .gitignore
+│   ├── package.json
+│   └── server.js
 └── frontend/
-├── src/
-│ ├── assets/
-│ ├── components/
-│ │ ├── ClaimerDashboard.jsx
-│ │ ├── DonorDashboard.jsx
-│ │ ├── ListingCard.jsx
-│ │ └── Navbar.jsx
-│ ├── context/
-│ │ └── AuthContext.jsx
-│ ├── hooks/
-│ │ ├── useClaims.js
-│ │ ├── useListing.js
-│ │ ├── useListings.js
-│ │ └── useMyListings.js
-│ ├── pages/
-│ │ ├── CreateListing.jsx
-│ │ ├── Dashboard.jsx
-│ │ ├── EditListing.jsx
-│ │ ├── Home.jsx
-│ │ ├── Landing.jsx
-│ │ ├── ListingDetail.jsx
-│ │ ├── Login.jsx
-│ │ └── Register.jsx
-│ ├── utils/
-│ │ └── api.js
-│ ├── App.jsx
-│ └── main.jsx
-| └── index.css
-├── .gitignore
-├── index.html
-└── package.json
+    ├── src/
+    │   ├── assets/
+    │   ├── components/
+    │   │   ├── ClaimerDashboard.jsx
+    │   │   ├── DonorDashboard.jsx
+    │   │   ├── ListingCard.jsx
+    │   │   └── Navbar.jsx
+    │   ├── context/
+    │   │   └── AuthContext.jsx
+    │   ├── hooks/
+    │   │   ├── useClaims.js
+    │   │   ├── useListing.js
+    │   │   ├── useListings.js
+    │   │   └── useMyListings.js
+    │   ├── pages/
+    │   │   ├── CreateListing.jsx
+    │   │   ├── Dashboard.jsx
+    │   │   ├── EditListing.jsx
+    │   │   ├── Home.jsx
+    │   │   ├── Landing.jsx
+    │   │   ├── ListingDetail.jsx
+    │   │   ├── Login.jsx
+    │   │   └── Register.jsx
+    │   ├── utils/
+    │   │   └── api.js
+    │   ├── App.jsx
+    │   ├── main.jsx
+    │   └── index.css
+    ├── .gitignore
+    ├── index.html
+    └── package.json
+```
 
 ## Author
 
