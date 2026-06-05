@@ -40,6 +40,8 @@
 - Render (Backend as Web service)
 - Render (Frontend as Statis Site)
 
+[View Live App](https://last-bite-frontend.onrender.com/)
+
 ## API Endponts
 
 ![API-endpoint](./frontend/src/assets/API-endpoint.png)
