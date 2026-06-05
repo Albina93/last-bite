@@ -40,7 +40,7 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100] flex items-center justify-center px-4">
+    <div className="min-h-screen bg-gray-100] flex items-center justify-center px-4 pt-4">
       <div className="bg-white border border-[#d4cfc6] rounded-2xl p-8 w-full max-w-md shadow-sm">
         {/* Logo */}
         <div className="text-center mb-8">

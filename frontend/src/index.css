@@ -1,2 +1,19 @@
 /* disable the tailwind for now */
 @import "tailwindcss";
+
+@keyframes floatup {
+  0% {
+    transform: translateY(100%) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.7;
+  }
+  90% {
+    opacity: 0.5;
+  }
+  100% {
+    transform: translateY(-120%) rotate(360deg);
+    opacity: 0;
+  }
+}

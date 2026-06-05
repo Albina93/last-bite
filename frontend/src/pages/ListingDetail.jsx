@@ -35,24 +35,24 @@ const ListingDetail = () => {
 
   if (loading)
     return (
-      <div className="min-h-screen bg-[#f5f0e8] flex items-center justify-center">
+      <div className="min-h-screen bg-gray-100] flex items-center justify-center">
         <p className="text-[#6b7280]">Loading listing...</p>
       </div>
     );
 
   if (error)
     return (
-      <div className="min-h-screen bg-[#f5f0e8] flex items-center justify-center">
+      <div className="min-h-screen bg-gray-100] flex items-center justify-center">
         <p className="text-red-500">{error}</p>
       </div>
     );
 
   return (
-    <div className="min-h-screen bg-[#f5f0e8]">
+    <div className="min-h-screen bg-gray-100]">
       <div className="max-w-3xl mx-auto px-6 py-10">
         {/* Back button */}
         <Link
-          to="/"
+          to="/home"
           className="text-[#4a7c59] text-sm font-medium hover:underline flex items-center gap-1 mb-6"
         >
           ← Back to listings
@@ -97,19 +97,19 @@ const ListingDetail = () => {
 
               {/* Details */}
               <div className="grid grid-cols-3 gap-4 mb-6">
-                <div className="bg-[#f5f0e8] rounded-xl p-3 text-center">
+                <div className="bg-gray-100] rounded-xl p-3 text-center">
                   <p className="text-xs text-[#6b7280] mb-1">Portions</p>
                   <p className="font-semibold text-[#2d2d2d]">
                     {listing.quantity}
                   </p>
                 </div>
-                <div className="bg-[#f5f0e8] rounded-xl p-3 text-center">
+                <div className="bg-gray-100] rounded-xl p-3 text-center">
                   <p className="text-xs text-[#6b7280] mb-1">Pickup</p>
                   <p className="font-semibold text-[#2d2d2d]">
                     {listing.pickup_time}
                   </p>
                 </div>
-                <div className="bg-[#f5f0e8] rounded-xl p-3 text-center">
+                <div className="bg-gray-100] rounded-xl p-3 text-center">
                   <p className="text-xs text-[#6b7280] mb-1">Location</p>
                   <p className="font-semibold text-[#2d2d2d] text-xs">
                     {listing.location}
@@ -124,7 +124,7 @@ const ListingDetail = () => {
               {user && user.role === "claimer" && (
                 <div>
                   {listing.status === "closed" ? (
-                    <div className="bg-[#f5f0e8] rounded-xl p-4 text-center">
+                    <div className="bg-gray-100] rounded-xl p-4 text-center">
                       <p className="text-[#6b7280] text-sm">
                         This listing is no longer available
                       </p>
@@ -165,7 +165,7 @@ const ListingDetail = () => {
 
               {/* Not logged in */}
               {!user && (
-                <div className="bg-[#f5f0e8] rounded-xl p-4 text-center">
+                <div className="bg-gray-100] rounded-xl p-4 text-center">
                   <p className="text-[#6b7280] text-sm">
                     Please{" "}
                     <Link

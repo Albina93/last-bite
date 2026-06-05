@@ -47,7 +47,7 @@ const Register = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100] flex items-center justify-center px-4 pt-10">
+    <div className="min-h-screen bg-gray-100] flex items-center justify-center px-4 pt-6">
       <div className="bg-white border border-[#d4cfc6] rounded-2xl p-8 w-full max-w-md shadow-sm">
         {/* Logo */}
         <div className="text-center mb-8">

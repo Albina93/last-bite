@@ -79,7 +79,7 @@ const ClaimerDashboard = () => {
             <p className="text-[#6b7280]">You have no claims yet</p>
 
             <Link
-              to="/"
+              to="/home"
               className="text-[#4a7c59] text-sm font-medium hover:underline mt-2 inline-block"
             >
               Browse listings →

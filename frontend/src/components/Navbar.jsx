@@ -11,7 +11,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-[#f5f0e8] border-b border-[#d4cfc6] px-6 py-4">
+    <nav className="bg-gray-50 border-b border-[#d4cfc6] px-6 py-4 sticky top-0 z-50">
       <div className="max-w-6xl mx-auto flex items-center justify-between">
         {/* Logo */}
         <Link
@@ -28,6 +28,15 @@ const Navbar = () => {
               Hello,{" "}
               <span className="text-[#2d2d2d] font-medium">{user.name}</span>
             </span>
+
+            {/* Browse food */}
+            <Link
+              to="/home"
+              className="text-[#4a7c59] text-sm font-medium hover:underline"
+            >
+              Browse food
+            </Link>
+
             <Link
               to="/dashboard"
               className="text-[#4a7c59] text-sm font-medium hover:underline"
