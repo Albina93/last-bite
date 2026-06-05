@@ -1,8 +1,5 @@
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import logo from "../assets/logo.png";
-
-import { useEffect, useRef } from "react";
 
 const FloatingItems = () => {
   const icons = [
@@ -26,12 +23,12 @@ const FloatingItems = () => {
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
       {/* Loop over every item in the array and for each one return div with a key */}
-      {[...Array(20)].map((_, i) => (
+      {[...Array(24)].map((_, i) => (
         <div
           key={i}
           style={{
             position: "absolute",
-            left: `${Math.random() * 95}%`, //random position from left to right
+            left: `${Math.random() * 90}%`, //random position from left to right
             fontSize: `${20 + Math.random() * 20}px`, // random size
             opacity: 0.1, // visibility 10%
             animation: `floatup ${6 + Math.random() * 8}s linear ${Math.random() * 6}s infinite`,

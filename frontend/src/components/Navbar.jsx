@@ -43,14 +43,7 @@ const Navbar = () => {
             >
               Dashboard
             </Link>
-            {user.role === "donor" && (
-              <Link
-                to="/listings/create"
-                className="bg-[#4a7c59] text-white text-sm px-4 py-2 rounded-full hover:bg-[#3d6b4a] transition-colors"
-              >
-                + Post food
-              </Link>
-            )}
+
             <button
               onClick={handleLogout}
               className="text-[#6b7280] text-sm hover:text-[#2d2d2d] transition-colors"
