@@ -3,6 +3,7 @@ import useListing from "../hooks/useListing";
 import { useAuth } from "../context/AuthContext";
 import { useState } from "react";
 import api from "../utils/api";
+import axios from "axios";
 
 const ListingDetail = () => {
   const { id } = useParams();
@@ -17,9 +18,13 @@ const ListingDetail = () => {
     setClaimLoading(true);
     setClaimError(null);
     try {
-      await api.post(`/api/listings/${id}/claims`, {
-        donation_note: donationNote,
-      });
+      await axios.post(
+        `https://last-bite-backend-d3is.onrender.com/api/listings/${id}/claims`,
+        { donation_note: donationNote },
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        },
+      );
       setClaimSuccess(true);
       window.location.reload();
     } catch (err) {
