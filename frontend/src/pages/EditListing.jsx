@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import api from "../utils/api";
 import useListing from "../hooks/useListing";
+import { uploadImageToCloudinary } from "../utils/uploadImage";
 
 const EditListing = () => {
   const { id } = useParams();
@@ -18,6 +19,7 @@ const EditListing = () => {
   });
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [uploadingPhoto, setUploadingPhoto] = useState(false);
 
   useEffect(() => {
     if (listing) {
@@ -39,6 +41,22 @@ const EditListing = () => {
       [e.target.name]:
         e.target.type === "checkbox" ? e.target.checked : e.target.value,
     });
+  };
+
+  const handlePhotoChange = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    setUploadingPhoto(true);
+    setError(null);
+    try {
+      const url = await uploadImageToCloudinary(file);
+      setFormData((prev) => ({ ...prev, photo_url: url }));
+    } catch (err) {
+      setError("Photo upload failed. Please try again.");
+    } finally {
+      setUploadingPhoto(false);
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -117,16 +135,27 @@ const EditListing = () => {
 
             <div>
               <label className="text-[#2d2d2d] text-sm font-medium block mb-1">
-                Photo URL{" "}
+                Photo
                 <span className="text-[#6b7280] font-normal">(optional)</span>
               </label>
               <input
-                type="text"
-                name="photo_url"
-                value={formData.photo_url}
-                onChange={handleChange}
+                type="file"
+                accept="image/*"
+                onChange={handlePhotoChange}
                 className="w-full border border-[#d4cfc6] rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-[#4a7c59] transition-colors"
               />
+              {uploadingPhoto && (
+                <p className="text-xs text-[#6b7280] mt-1">
+                  Uploading photo...
+                </p>
+              )}
+              {formData.photo_url && !uploadingPhoto && (
+                <img
+                  src={formData.photo_url}
+                  alt="Preview"
+                  className="mt-2 h-32 w-32 object-cover rounded-lg border border-[#d4cfc6]"
+                />
+              )}
             </div>
 
             <div className="grid grid-cols-2 gap-4">
@@ -193,7 +222,7 @@ const EditListing = () => {
 
             <button
               type="submit"
-              disabled={loading}
+              disabled={loading || uploadingPhoto}
               className="bg-[#4a7c59] text-white py-3 rounded-lg text-sm font-medium hover:bg-[#3d6b4a] transition-colors disabled:opacity-50 disabled:cursor-not-allowed mt-2"
             >
               {loading ? "Saving..." : "Save changes"}
