@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import api from "../utils/api";
 import { uploadImageToCloudinary } from "../utils/uploadImage";
+import { analyzePhotoWithAI } from "../utils/aiSuggest";
 
 const CreateListing = () => {
   const navigate = useNavigate();
@@ -17,21 +18,34 @@ const CreateListing = () => {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const [uploadingPhoto, setUploadingPhoto] = useState(false);
+  const [analyzingPhoto, setAnalyzingPhoto] = useState(false);
 
-  const handlePhotoChange = async (e) => {
+  const handlePhotoChange = (e) => {
     const file = e.target.files[0];
     if (!file) return;
 
-    setUploadingPhoto(true);
     setError(null);
-    try {
-      const url = await uploadImageToCloudinary(file);
-      setFormData((prev) => ({ ...prev, photo_url: url }));
-    } catch (err) {
-      setError("Photo upload failed. Please try again.");
-    } finally {
-      setUploadingPhoto(false);
-    }
+
+    // Upload the real photo to Cloudinary (required for the listing)
+    setUploadingPhoto(true);
+    uploadImageToCloudinary(file)
+      .then((url) => setFormData((prev) => ({ ...prev, photo_url: url })))
+      .catch(() => setError("Photo upload failed. Please try again."))
+      .finally(() => setUploadingPhoto(false));
+
+    // Ask AI to suggest listing details (optional — fails quietly if it doesn't work)
+    setAnalyzingPhoto(true);
+    analyzePhotoWithAI(file)
+      .then((suggestion) => {
+        setFormData((prev) => ({
+          ...prev,
+          title: suggestion.title || prev.title,
+          description: suggestion.description || prev.description,
+          quantity: suggestion.quantity ?? prev.quantity,
+        }));
+      })
+      .catch((err) => console.error("AI suggestion failed:", err))
+      .finally(() => setAnalyzingPhoto(false));
   };
 
   const handleChange = (e) => {
@@ -129,6 +143,11 @@ const CreateListing = () => {
                   Uploading photo...
                 </p>
               )}
+              {analyzingPhoto && (
+                <p className="text-xs text-[#4a7c59] mt-1">
+                  ✨ AI is filling out the listing...
+                </p>
+              )}
               {formData.photo_url && !uploadingPhoto && (
                 <img
                   src={formData.photo_url}
@@ -205,7 +224,7 @@ const CreateListing = () => {
 
             <button
               type="submit"
-              disabled={loading || uploadingPhoto}
+              disabled={loading || uploadingPhoto || analyzingPhoto}
               className="bg-[#4a7c59] text-white py-3 rounded-lg text-sm font-medium hover:bg-[#3d6b4a] transition-colors disabled:opacity-50 disabled:cursor-not-allowed mt-2"
             >
               {loading ? "Posting..." : "Post listing"}

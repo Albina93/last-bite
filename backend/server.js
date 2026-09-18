@@ -7,6 +7,7 @@ const connectDB = require("./config/db");
 const authRoutes = require("./routes/authRoutes");
 const listingRoutes = require("./routes/listingRoutes");
 const claimRoutes = require("./routes/claimRoutes");
+const aiRoutes = require("./routes/aiRoutes");
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -22,6 +23,7 @@ app.use(express.json());
 app.use("/api/users", authRoutes);
 app.use("/api/listings", listingRoutes);
 app.use("/api/claims", claimRoutes);
+app.use("/api/ai", aiRoutes);
 
 // test
 app.get("/", (req, res) => {
